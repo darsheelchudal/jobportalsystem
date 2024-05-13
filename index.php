@@ -179,12 +179,9 @@ include('user/config/session_start.php');
 
                     <li class="nav-item active">
                         <a class="nav-link ml-4" href="#"><i class="bi bi-person"></i></a>
-                    </li>' . '
+                    </li>
 
-                    <li class="nav-item">
-                        <button type="button" class="btn btn-primary mr-4"> <a class="nav-link1" href="user/logout.php">&nbsp Logout</a></button>
-
-                    </li>;
+                   
 
 
 
@@ -216,37 +213,15 @@ include('user/config/session_start.php');
 
 
                         <div class="block-content">
-                            <form action="#" class="hero-form form-inline" id="hero-form" method="post" role="form">
+                        <form action="search.php" class="hero-form form-inline" id="hero-form" method="post" role="form">
+    <div class="form-group">
+        <label class="control-label sr-only" for="text">Enter Job Title</label>
+        <input id="text" class="form-control" name="job_search" placeholder="Enter Job Title" type="text">
+      
+        <input id="Get Started" class="form-control btn btn-lg btn-default" type="submit" value="Search">
+    </div>
+</form>
 
-
-                                <div class="form-group">
-                                    <label class="control-label sr-only" for="text">Enter Job Title</label>
-                                    <input id="text" class="form-control" name="job_search" placeholder="Enter Job Title" type="text">
-                                    <label class="control-label sr-only" for="services-select">Choose Categories</label>
-                                    <select>
-                                        <option value="">
-                                            Choose Categories
-                                        </option>
-                                        <?php
-                                        $sql = "SELECT * FROM categories";
-                                        $res = mysqli_query($conn, $sql);
-                                        if (mysqli_num_rows($res) > 0) {
-                                            foreach ($res as $value) {
-                                        ?>
-                                                <option value="<?php echo $value['category'] ?>">
-                                                    <?php echo $value['category'] ?>
-                                                </option>
-                                        <?php
-                                            }
-                                        }
-                                        ?>
-
-
-                                    </select>
-
-                                    <input id="Get Started" class="form-control btn btn-lg btn-default" type="submit" value="Search">
-                                </div>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -262,67 +237,60 @@ include('user/config/session_start.php');
         </section>
 
     </div>
-    <h2 class="text-center ">LISTED JOBS</h2>
-    <div class="container-fluid mb-4">
-        <div class="col-md-12 mt-5">
-            <div class="row">
-                <?php
-                $sql = "SELECT * FROM vacancies";
-                $res = mysqli_query($conn, $sql);
-                if (mysqli_num_rows($res) > 0) {
-                    foreach ($res as $row) {
-                        if ($row['job_status'] == 1) {
-                            $company_id = $row['company_id'];
-                            $company_sql = "SELECT name, image FROM companies WHERE id = $company_id";
-                            $company_res = mysqli_query($conn, $company_sql);
-                            $company_row = mysqli_fetch_assoc($company_res);
-                            $company_name = $company_row['name'];
-                            $company_image = $company_row['image'];
-                            $category_id = $row['category_id'];
-                            $category_sql = "SELECT category FROM categories WHERE id=$category_id";
-                            $category_res = mysqli_query($conn, $category_sql);
-                            $category_row = mysqli_fetch_assoc($category_res);
-                            $category_name = $category_row['category'];
+    <h2 class="text-center mb-4">LISTED JOBS</h2>
+<div class="container-fluid mb-4">
+    <div class="row">
+        <?php
+        $sql = "SELECT * FROM vacancies";
+        $res = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            foreach ($res as $row) {
+                if ($row['job_status'] == 1) {
+                    $company_id = $row['company_id'];
+                    $company_sql = "SELECT name, image FROM companies WHERE id = $company_id";
+                    $company_res = mysqli_query($conn, $company_sql);
+                    $company_row = mysqli_fetch_assoc($company_res);
+                    $company_name = $company_row['name'];
+                    $company_image = $company_row['image'];
+                    $category_id = $row['category_id'];
+                    $category_sql = "SELECT category FROM categories WHERE id=$category_id";
+                    $category_res = mysqli_query($conn, $category_sql);
+                    $category_row = mysqli_fetch_assoc($category_res);
+                    $category_name = $category_row['category'];
 
-                ?>
-                            <div class="col-md-4 mb-4">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center justify-content-center mb-3">
-                                            <img src="<?php echo "admin/uploads/" . $company_image ?>" alt="<?php echo $company_name ?>" height="200    px" width="100%">
-                                        </div>
-                                        <div class="d-flex align-items-center mb-3">
-                                            <h3 class="card-title mb-0 ml-3"><i class="bi bi-building"></i> <?php echo $company_name ?></h3>
-                                        </div>
-                                        <div class="mb-3">
-                                            <h5 class="card-title"><i class="bi bi-briefcase"></i> <?php echo $row['job_title'] ?></h5>
-
-                                            <p class="card-text mb-1"><i class="bi bi-calendar4-event"></i> <b>&nbspDeadline:</b> <?php echo $row['deadline'] ?></p>
-
-                                            <p class="card-text mb-1"><i class="bi bi-card-list"></i> <b>&nbspCategory:</b> <?php echo $category_name ?></p>
-
-                                        </div>
-                                        <div class="text-center">
-                                            <?php
-
-                                            ?>
-                                            <a href="#" class="btn btn-primary btn-lg">Apply</a>
-                                        </div>
-                                    </div>
+                    // Assuming there's a job application form named 'apply.php'
+                    $apply_url = "apply.php?job_id=" . $row['id'];
+        ?>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-center mb-3">
+                                    <img src="<?php echo "admin/uploads/" . $company_image ?>" alt="<?php echo $company_name ?>" height="200px" width="100%">
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <h3 class="card-title mb-0 ml-3"><i class="bi bi-building"></i> <?php echo $company_name ?></h3>
+                                </div>
+                                <div class="mb-3">
+                                    <h5 class="card-title"><i class="bi bi-briefcase"></i> <?php echo $row['job_title'] ?></h5>
+                                    <p class="card-text mb-1"><i class="bi bi-calendar4-event"></i> <b>&nbspDeadline:</b> <?php echo $row['deadline'] ?></p>
+                                    <p class="card-text mb-1"><i class="bi bi-card-list"></i> <b>&nbspCategory:</b> <?php echo $category_name ?></p>
+                                </div>
+                                <div class="text-center">
+                                    <a href="<?php echo $apply_url; ?>" class="btn btn-primary btn-lg">Apply</a>
                                 </div>
                             </div>
-                <?php
-                        }
-                    }
-                } else {
-                    echo "<p>No vacancies found</p>";
+                        </div>
+                    </div>
+        <?php
                 }
-                ?>
-            </div>
-
-
-        </div>
+            }
+        } else {
+            echo "<p>No vacancies found</p>";
+        }
+        ?>
     </div>
+</div>
+
 
     <h2 class="text-center ">COMPANY</h2>
     <div class="container-fluid mb-4">
@@ -355,12 +323,13 @@ include('user/config/session_start.php');
             </div>
         </div>
     </div>
-    <h2 class="text-center mt-10">CATEGORY</h2>
+    <h2 class="text-center mt-10">CATEGORY</h2> 
     <div class="container-fluid mt-5 mb-3">
         <div class="col-md-12">
 
             <div class="row">
                 <?php
+            
                 $sql = "SELECT * FROM categories";
                 $res = mysqli_query($conn, $sql);
                 if (mysqli_num_rows($res) > 0) {
