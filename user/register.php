@@ -2,7 +2,7 @@
 <html lang="en">
 
 <?php
-
+session_start();
 include('../include/header.php');
 
 $errName = '';
@@ -50,12 +50,21 @@ if (isset($_POST['submit'])) {
                 <li class="nav-item active">
                     <a class="nav-link ml-4" href="../index.php">Home</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link ml-4" href="../about.php">About Us</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link ml-4" href="../contact.php">Contact Us</a>
-                </li>
+             
+<?php
+if (!isset($_SESSION['logged_in'])) { // If not logged in, display About Us and Contact Us
+    ?>
+    <li class="nav-item active">
+        <a class="nav-link ml-4" href="about.php">About Us</a>
+    </li>
+
+    <li class="nav-item active">
+        <a class="nav-link ml-4" href="contact.php">Contact Us</a>
+    </li>
+    <?php
+} 
+?>
+
 
             </ul>
         </div>

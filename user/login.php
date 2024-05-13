@@ -7,6 +7,7 @@
 include('../include/header.php');
 require('config/connection.php');
 require('config/session_start.php');
+session_start();
 
 
 ?>
@@ -25,12 +26,21 @@ require('config/session_start.php');
                 <li class="nav-item active">
                     <a class="nav-link ml-4" href="../index.php">Home</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link ml-4" href="../about.php">About Us</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link ml-4" href="../contact.php">Contact Us</a>
-                </li>
+              
+<?php
+if (!isset($_SESSION['logged_in'])) { // If not logged in, display About Us and Contact Us
+    ?>
+    <li class="nav-item active">
+        <a class="nav-link ml-4" href="about.php">About Us</a>
+    </li>
+
+    <li class="nav-item active">
+        <a class="nav-link ml-4" href="contact.php">Contact Us</a>
+    </li>
+    <?php
+} 
+?>
+
 
             </ul>
         </div>
@@ -51,7 +61,18 @@ require('config/session_start.php');
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6 mt-3">
+           
                 <div class="card">
+                <?php
+                      if (isset($_SESSION['status'])) {
+                        echo "<div class='alert alert-primary' role='alert'>"
+                            . $_SESSION['status'] .
+                            "</div>";
+                    }
+                    
+                    ?>
+                
+              
                     <div class="card-header">
                         <h3 class="card-title"><i class="bi bi-person"></i>User Login</h3>
                     </div>

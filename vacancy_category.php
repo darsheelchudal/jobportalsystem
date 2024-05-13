@@ -1,5 +1,6 @@
 <?php
 require('user/config/connection.php');
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,14 +89,20 @@ require('user/config/connection.php');
                     </li>
 
 
-                    <li class="nav-item active">
-                        <a class="nav-link ml-4" href="about.php">About Us</a>
-                    </li>
+                             
+<?php
+if (!isset($_SESSION['logged_in'])) { // If not logged in, display About Us and Contact Us
+    ?>
+    <li class="nav-item active">
+        <a class="nav-link ml-4" href="about.php">About Us</a>
+    </li>
 
-
-                    <li class="nav-item active">
-                        <a class="nav-link ml-4" href="contact.php">Contact Us</a>
-                    </li>
+    <li class="nav-item active">
+        <a class="nav-link ml-4" href="contact.php">Contact Us</a>
+    </li>
+    <?php
+} 
+?>
 
 
 
@@ -107,38 +114,49 @@ require('user/config/connection.php');
                 </ul>
             </div>
             <div class="ml-auto d-flex justify-content-between">
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav">
-
-                        <?php
-                        if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true) {
-                        ?>
-                            <li class="nav-item active">
-                                <a class="nav-link ml-4" href="#"><i class="bi bi-person"></i>' . $_SESSION['username'] . '</a>
-                            </li>' . '
-
-                            <li class="nav-item">
-                                <button type="button" class="btn btn-primary mr-4"> <a class="nav-link1" href="user/logout.php">&nbsp Logout</a></button>
-
-                            </li>';
-                        <?php
-                        } else { ?>
-
-                            '<li class="nav-item">
-                                <button type="button" class="btn btn-primary mr-4"><a class="nav-link1" href="user/login.php"><i class="bi bi-people"></i>&nbsp;Login / Signup</a></button>
-                            </li>';
-                        <?php } ?>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
 
 
+             
+
+                   
+
+
+                <?php
+ if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
+    ?>
+        <li class="nav-item">
+            <button type="button" class="btn btn-primary mr-4">
+                <a class="nav-link1" href="user/login.php">
+                    <i class="bi bi-people"></i>&nbsp;Login / Signup
+                </a>
+            </button>
+        </li>
+    <?php
+    } else {
+    ?>
+        <li class="nav-item">
+            <button type="button" class="btn btn-primary mr-4">
+                <a class="nav-link1" href="user/logout.php">
+                    &nbsp;Logout
+                </a>
+            </button>
+        </li>
+    <?php
+    }
+    ?>
 
 
 
 
 
 
-                    </ul>
-                </div>
+
+
+                </ul>
             </div>
+        </div>  
         </nav>
 
         <h2 class="text-center mt-5">JOBS FOR SELECTED CATEGORY</h2>

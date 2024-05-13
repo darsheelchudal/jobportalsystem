@@ -62,7 +62,7 @@ if (!$_SESSION['is_login']) {
                     </li>
                 <?php } ?>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="manage_applicants.php" class="nav-link">
                         <i class="nav-icon fas fa-copy"></i>
                         <p>
                             Applicants
@@ -97,15 +97,7 @@ if (!$_SESSION['is_login']) {
                     </a>
 
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-copy"></i>
-                        <p>
-                            Employee
-                        </p>
-                    </a>
-
-                </li>
+            
                 <?php
                 if ($_SESSION['role'] == 1) { ?>
 

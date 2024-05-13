@@ -27,6 +27,10 @@ if (isset($_POST['job_search'])) {
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo $row['job_title']; ?></h5>
                                 <p class="card-text"><?php echo $row['job_desc']; ?></p>
+                                <div class="text-center">
+                                    <a href="user/register.php" class="btn btn-primary btn-md">Apply</a>
+                                    
+                                </div>
                             </div>
                         </div>
                     </div>

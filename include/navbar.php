@@ -1,3 +1,8 @@
+<?php
+
+session_start();
+?>
+
 <nav class="navbar navbar-expand-lg navbar-custom-color">
     <img src="image/JagirAddaLogo.png" height="100px" width="100px">
     <a class="navbar-brand" href="#">JAAGIR ADDA</a>
@@ -9,31 +14,55 @@
             <li class="nav-item active">
                 <a class="nav-link ml-4" href="index.php">Home</a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link ml-4" href="#">About Us</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link ml-4" href="contact.php">Contact Us</a>
-            </li>
+           
+<?php
+if (!isset($_SESSION['logged_in'])) { // If not logged in, display About Us and Contact Us
+    ?>
+    <li class="nav-item active">
+        <a class="nav-link ml-4" href="about.php">About Us</a>
+    </li>
+
+    <li class="nav-item active">
+        <a class="nav-link ml-4" href="contact.php">Contact Us</a>
+    </li>
+    <?php
+} 
+?>
+
 
         </ul>
     </div>
     <div class="ml-auto d-flex justify-content-between">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <button type="button" class="btn btn-primary mr-4"> <a class="nav-link1" href="user/login.php"><i class="bi bi-people"></i>&nbsp Login / Signup</a></button>
+            <?php
+// Check if $_SESSION['logged_in'] is not set or is false, then display login/signup button
+if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
+?>
+    <li class="nav-item">
+        <button type="button" class="btn btn-primary mr-4">
+            <a class="nav-link1" href="user/login.php">
+                <i class="bi bi-people"></i>&nbsp;Login / Signup
+            </a>
+        </button>
+    </li>
+<?php
+} else {
+?>
+    <li class="nav-item">
+        <button type="button" class="btn btn-primary mr-4">
+            <a class="nav-link1" href="user/logout.php">
+                &nbsp;Logout
+            </a>
+        </button>
+    </li>
+<?php
+}
+?>
 
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle mr-4" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Company
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Login</a>
-                        <a class="dropdown-item" href="#">Register</a>
-                    </div>
-                </li>
+
+
+              
 
             </ul>
         </div>
