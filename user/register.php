@@ -19,21 +19,22 @@ if (isset($_POST['submit'])) {
     if (empty($name)) {
         $errName = "Fill your name";
     }
-
+    
     if (empty($username)) {
-        $errName = "Fill your name";
+        $errUsername = "Fill your username"; // Corrected variable name
     }
-
+    
     if (empty($password)) {
         $errPassword = "Fill your password";
     } else {
         if (strlen($password) < 7) {
-            echo "Must be at least 7";
+            $errPassword = "Password must be at least 7 characters long"; // Updated error message
         }
     }
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errEmail = "email not in pattern";
+        $errEmail = "Email is not in a valid format";
     }
+    
 }
 ?>
 
