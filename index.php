@@ -1,7 +1,6 @@
         <?php
         session_start();
         require('user/config/connection.php');
-
         ?>
 
 
@@ -132,8 +131,17 @@
 
         <body>
       
-
+        <?php
+                    if (isset($_SESSION['status'])) {
+                        echo '<div class="alert alert-primary" role="alert">
+                        ' . $_SESSION['status'] . '</div>';
+                        unset($_SESSION['status']);
+                    }
+                    ?>
+                  
+                
             <nav class="navbar navbar-expand-lg navbar-custom-color">
+                
                 <img src="image/JagirAddaLogo.png" height="100px" width="100px">
                 <a class="navbar-brand" href="index.php">JAAGIR ADDA</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

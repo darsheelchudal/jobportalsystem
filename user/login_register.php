@@ -17,7 +17,8 @@
             $row = mysqli_fetch_assoc($result);
             if (password_verify($password, $row['password'])) {
                 $_SESSION['logged_in'] = true;
-                $_SESSION['username'] = $row['username'];
+              
+                $_SESSION['status'] = "Successfully Logged in";
                 header("location:../index.php");
                 exit();
             } else {
