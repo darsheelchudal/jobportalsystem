@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 11, 2024 at 05:23 AM
+-- Generation Time: May 20, 2024 at 03:30 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -54,11 +54,24 @@ INSERT INTO `admin_login` (`id`, `name`, `username`, `password`, `role`, `create
 --
 
 CREATE TABLE `applications` (
+  `a_id` int(11) NOT NULL,
   `name` text NOT NULL,
   `address` varchar(255) NOT NULL,
-  `contact` varchar(255) NOT NULL,
-  `apply_date` date NOT NULL
+  `education` varchar(255) NOT NULL,
+  `resume` varchar(255) DEFAULT NULL,
+  `status` smallint(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `applications`
+--
+
+INSERT INTO `applications` (`a_id`, `name`, `address`, `education`, `resume`, `status`) VALUES
+(28, 'Malcolm Salazar', 'Accusamus ut dolore ', 'Quas est occaecat o', 'uploads/git-cheat-sheet-education.pdf', 1),
+(29, 'Jessamine Melendez', 'Ratione quo nihil an', 'Veniam in error qui', 'uploads/git-cheat-sheet-education (1).pdf', 2),
+(30, 'Sade Chen', 'Est sed illum aut ', 'Deleniti nulla non q', 'uploads/git-cheat-sheet-education (1).pdf', 2),
+(32, 'Quinn Bernard', 'Rem aspernatur assum', 'Et enim commodo cons', 'uploads/git-cheat-sheet-education (1).pdf', 2),
+(33, '3445', '24344', 'gffff', 'uploads/TU COVER page.docx', 0);
 
 -- --------------------------------------------------------
 
@@ -132,7 +145,9 @@ CREATE TABLE `registered_users` (
 
 INSERT INTO `registered_users` (`id`, `full_name`, `username`, `email`, `password`) VALUES
 (9, 'Darsheel Chuda', 'darsheelchudal11', 'darsheelchudal11@gmail.com', '$2y$10$udAzi3BUfVtjWnj.gbqTnuDYfoJadhc2NRp4Zm71BDCmZMBpdyh3K'),
-(10, '', '', '', '$2y$10$W7he7supe9dE6X1o1vXife8WZPcMYk9/aucSLgh3r.8legruz1Zgy');
+(10, '', '', '', '$2y$10$W7he7supe9dE6X1o1vXife8WZPcMYk9/aucSLgh3r.8legruz1Zgy'),
+(11, 'Deirdre Simpson', 'rimov', 'horobigyda@mailinator.com', '$2y$10$HYVJ.9zMFEGPqqVt5orSNuI3QzcSEqspeD6Cj44HHq0.qLLmzW596'),
+(12, 'Keith Kerr', 'menyfim', 'lyrykenesu@mailinator.com', '$2y$10$AjkBxz4tEbOrkfaz5UDtN.f5OAryxKYSjp6F7eXCf1jSY8WeL8Uqe');
 
 -- --------------------------------------------------------
 
@@ -170,6 +185,12 @@ INSERT INTO `vacancies` (`id`, `job_title`, `job_desc`, `job_status`, `deadline`
 --
 ALTER TABLE `admin_login`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `applications`
+--
+ALTER TABLE `applications`
+  ADD PRIMARY KEY (`a_id`);
 
 --
 -- Indexes for table `categories`
@@ -210,6 +231,12 @@ ALTER TABLE `admin_login`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
+-- AUTO_INCREMENT for table `applications`
+--
+ALTER TABLE `applications`
+  MODIFY `a_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
@@ -225,13 +252,13 @@ ALTER TABLE `companies`
 -- AUTO_INCREMENT for table `registered_users`
 --
 ALTER TABLE `registered_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `vacancies`
 --
 ALTER TABLE `vacancies`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
