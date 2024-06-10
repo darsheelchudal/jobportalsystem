@@ -10,6 +10,7 @@ include("includes/header.php");
 
 require('config/dbcon.php');
 
+//Admin login
 $error = '';
 
 if (isset($_POST['submit'])) {
