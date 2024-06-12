@@ -4,6 +4,8 @@ include('includes/navbar.php');
 include('includes/sidebar.php');
 include('config/dbcon.php');
 
+//applications manage
+
 if (isset($_POST['approve'])) {
     $application_id = $_POST['application_id'];
     $sql = "UPDATE applications SET status = 1 WHERE a_id = $application_id";
