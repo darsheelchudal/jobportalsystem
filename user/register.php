@@ -1,45 +1,14 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<?php
-session_start();
-include('../include/header.php');
-
-$errName = '';
-$errPassword = '';
-$errUsername = '';
-$errEmail = '';
-
-if (isset($_POST['submit'])) {
-    $name = $_POST['full_name'];
-    $password = $_POST['password'];
-    $email = $_POST['email'];
-    $username = $_POST['username'];
-
-    if (empty($name)) {
-        $errName = "Fill your name";
-    }
-    
-    if (empty($username)) {
-        $errUsername = "Fill your username"; // Corrected variable name
-    }
-    
-    if (empty($password)) {
-        $errPassword = "Fill your password";
-    } else {
-        if (strlen($password) < 7) {
-            $errPassword = "Password must be at least 7 characters long"; // Updated error message
-        }
-    }
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errEmail = "Email is not in a valid format";
-    }
-    
-}
-?>
-
-
+<head>
+    <!-- Include your header content here -->
+</head>
 <body>
+    <?php
+    session_start();
+    include('../include/header.php');
+    ?>
+
     <nav class="navbar navbar-expand-lg navbar-custom-color">
         <img src="../image/JagirAddaLogo.png" height="100px" width="100px">
         <a class="navbar-brand" href="#">JAAGIR ADDA</a>
@@ -51,22 +20,18 @@ if (isset($_POST['submit'])) {
                 <li class="nav-item active">
                     <a class="nav-link ml-4" href="../index.php">Home</a>
                 </li>
-             
-<?php
-if (!isset($_SESSION['logged_in'])) { // If not logged in, display About Us and Contact Us
-    ?>
-    <li class="nav-item active">
-        <a class="nav-link ml-4" href="about.php">About Us</a>
-    </li>
-
-    <li class="nav-item active">
-        <a class="nav-link ml-4" href="contact.php">Contact Us</a>
-    </li>
-    <?php
-} 
-?>
-
-
+                <?php
+                if (!isset($_SESSION['logged_in'])) { // If not logged in, display About Us and Contact Us
+                ?>
+                <li class="nav-item active">
+                    <a class="nav-link ml-4" href="about.php">About Us</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link ml-4" href="contact.php">Contact Us</a>
+                </li>
+                <?php
+                }
+                ?>
             </ul>
         </div>
         <div class="ml-auto d-flex justify-content-between">
@@ -74,75 +39,119 @@ if (!isset($_SESSION['logged_in'])) { // If not logged in, display About Us and 
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <button type="button" class="btn btn-primary mr-4"> <a class="nav-link1" href="../user/login.php"><i class="bi bi-people"></i>&nbsp Login / Signup</a></button>
-
                     </li>
-
-
                 </ul>
             </div>
         </div>
     </nav>
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6 mt-3">
                 <div class="card">
+                    <?php
+                    if (isset($_SESSION['status'])) {
+                        echo "<div class='alert alert-primary' role='alert'>"
+                            . $_SESSION['status'] .
+                            "</div>";
+                    }
+                    ?>
                     <div class="card-header">
-                        <h3 class="card-title"><i class="bi bi-person"></i>User Register</h3>
+                        <h3 class="card-title"><i class="bi bi-person-plus"></i> User Registration</h3>
                     </div>
                     <div class="card-body">
-                        <form action="login_register.php" method="post">
+                        <form id="registrationForm" action="register.php" method="post" onsubmit="return validateForm()">
                             <div class="form-group">
-                                <label for="FullName">Full Name</label>
-                                <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Enter Full Name">
-                                <span class="text-danger"><?php echo $errName; ?></span>
+                                <label for="full_name">Full Name</label>
+                                <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Enter full name">
+                                <span id="nameError" class="text-danger"></span>
                             </div>
-
-
                             <div class="form-group">
-                                <label for="FullName">Username</label>
-                                <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username">
-                                <span class="text-danger"><?php echo $errUsername; ?></span>
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+                                <span id="usernameError" class="text-danger"></span>
                             </div>
-
-
                             <div class="form-group">
-                                <label for="Email">Email address</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
-                                <span class="text-danger"><?php echo $errEmail; ?></span>
+                                <label for="email">Email Address</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email address">
+                                <span id="emailError" class="text-danger"></span>
                             </div>
-
-
                             <div class="form-group">
-                                <label for="Password">Password</label>
+                                <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                                <span class="text-danger"><?php echo $errPassword; ?></span>
+                                <span id="passwordError" class="text-danger"></span>
                             </div>
-
-
-                            <button type="submit" class="btn btn-primary" name="register">Submit</button>
-                            <p class="text-muted mt-3">Already have an account?<a href="login.php"> Sign in </a></p>
-
+                            <button type="submit" class="btn btn-primary" name="register">Register</button>
+                            <p class="text-muted mt-3">Already have an account? <a href="../user/login.php"> Log in </a></p>
+                        </form>
                     </div>
-
-                    </form>
                 </div>
             </div>
         </div>
     </div>
 
-
+    <!-- Include your footer content here -->
+    <?php
+    include('../include/footer.php');
+    ?>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.min.js"></script>
+    <script>
+        function validateForm() {
+            var isValid = true;
 
+            // Reset errors
+            document.getElementById('nameError').textContent = '';
+            document.getElementById('usernameError').textContent = '';
+            document.getElementById('emailError').textContent = '';
+            document.getElementById('passwordError').textContent = '';
 
+            // Validate full name
+            var fullName = document.getElementById('full_name').value.trim();
+            if (fullName === '') {
+                document.getElementById('nameError').textContent = 'Full name is required.';
+                isValid = false;
+            }
 
+            // Validate username
+            var username = document.getElementById('username').value.trim();
+            if (username === '') {
+                document.getElementById('usernameError').textContent = 'Username is required.';
+                isValid = false;
+            }
+
+            // Validate email
+            var email = document.getElementById('email').value.trim();
+            if (email === '') {
+                document.getElementById('emailError').textContent = 'Email is required.';
+                isValid = false;
+            } else {
+                var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(email)) {
+                    document.getElementById('emailError').textContent = 'Invalid email format.';
+                    isValid = false;
+                }
+            }
+
+            // Validate password
+            var password = document.getElementById('password').value.trim();
+            if (password === '') {
+                document.getElementById('passwordError').textContent = 'Password is required.';
+                isValid = false;
+            } else if (password.length < 7) {
+                document.getElementById('passwordError').textContent = 'Password must be at least 7 characters long.';
+                isValid = false;
+            }
+
+            return isValid;
+        }
+    </script>
 </body>
-<?php
-include('../include/script.php');
-include('../include/footer.php');
-
-
-?>
-
 </html>
+
+
+
