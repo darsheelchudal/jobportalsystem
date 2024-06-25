@@ -131,13 +131,15 @@
 
         <body>
       
-        <?php
-                    if (isset($_SESSION['status'])) {
-                        echo '<div class="alert alert-primary" role="alert">
-                        ' . $_SESSION['status'] . '</div>';
-                        unset($_SESSION['status']);
-                    }
-                    ?>
+      
+   <?php
+   if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
+       echo '<div class="alert alert-success mb-0 text-center" role="alert">
+               Logged in as: ' . $_SESSION['username'] . ' | 
+               <a href="applied_jobs.php" class="text-black">View Applied Jobs</a>
+             </div>';
+   }
+   ?>
                   
                 
             <nav class="navbar navbar-expand-lg navbar-custom-color">
@@ -255,72 +257,63 @@
                 </section>
 
             </div>
-            <h2 class="text-center mb-4">LISTED JOBS</h2>
-        <div class="container-fluid mb-4">
-            <div class="row">
-                <?php
-                $sql = "SELECT * FROM vacancies";
-                $res = mysqli_query($conn, $sql);
-                if (mysqli_num_rows($res) > 0) {
-                    foreach ($res as $row) {
-                        if ($row['job_status'] == 1) {
-                            $company_id = $row['company_id'];
-                            $company_sql = "SELECT name, image FROM companies WHERE id = $company_id";
-                            $company_res = mysqli_query($conn, $company_sql);
-                            $company_row = mysqli_fetch_assoc($company_res);
-                            $company_name = $company_row['name'];
-                            $company_image = $company_row['image'];
-                            $category_id = $row['category_id'];
-                            $category_sql = "SELECT category FROM categories WHERE id=$category_id";
-                            $category_res = mysqli_query($conn, $category_sql);
-                            $category_row = mysqli_fetch_assoc($category_res);
-                            $category_name = $category_row['category'];
-
-                            // Assuming there's a job application form named 'apply.php'
-                            $apply_url = "apply.php?job_id=" . $row['id'];
-                ?>
-                            <div class="col-md-4 mb-4">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center justify-content-center mb-3">
-                                            <img src="<?php echo "admin/uploads/" . $company_image ?>" alt="<?php echo $company_name ?>" height="200px" width="100%">
-                                        </div>
-                                        <div class="d-flex align-items-center mb-3">
-                                            <h3 class="card-title mb-0 ml-3"><i class="bi bi-building"></i> <?php echo $company_name ?></h3>
-                                        </div>
-                                        <div class="mb-3">
-                                            <h5 class="card-title"><i class="bi bi-briefcase"></i> <?php echo $row['job_title'] ?></h5>
-                                            <p class="card-text mb-1"><i class="bi bi-calendar4-event"></i> <b>&nbspDeadline:</b> <?php echo $row['deadline'] ?></p>
-                                            <p class="card-text mb-1"><i class="bi bi-card-list"></i> <b>&nbspCategory:</b> <?php echo $category_name ?></p>
-                                        </div>
-        <div class="text-center">
-            <?php
-            if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
-                // Show the "Login to Apply" button if the user is not logged in
-                ?>
-                <a href="user/login.php" class="btn btn-primary btn-lg">Login to Apply</a>
-            <?php
-            } else {
-                // Show the "Apply" button if the user is logged in
-                ?>
-                <a href="apply.php" class="btn btn-primary btn-lg">Apply</a>
-            <?php
-            }
-            ?>
-        </div>
-
-                                    </div>
-                                </div>
+<h2 class="text-center mb-4">LISTED JOBS</h2>
+<div class="container-fluid mb-4">
+    <div class="row">
+        <?php
+        $sql = "SELECT v.id, v.job_title, v.deadline, v.company_id, v.category_id, c.name AS company_name, c.image AS company_image, cat.category AS category_name
+                FROM vacancies v
+                INNER JOIN companies c ON v.company_id = c.id
+                INNER JOIN categories cat ON v.category_id = cat.id
+                WHERE v.job_status = 1";
+        
+        $res = mysqli_query($conn, $sql);
+        
+        if (mysqli_num_rows($res) > 0) {
+            while ($row = mysqli_fetch_assoc($res)) {
+                $apply_url = "apply.php?job_id=" . $row['id'];
+        ?>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-center mb-3">
+                                <img src="admin/uploads/<?php echo $row['company_image'] ?>" alt="<?php echo $row['company_name'] ?>" height="200px" width="100%">
                             </div>
-                <?php
-                        }
-                    }
-                } else {
-                    echo "<p>No vacancies found</p>";
-                }
-                ?>
-            </div>
-        </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <h3 class="card-title mb-0 ml-3"><i class="bi bi-building"></i> <?php echo $row['company_name'] ?></h3>
+                            </div>
+                            <div class="mb-3">
+                                <h5 class="card-title"><i class="bi bi-briefcase"></i> <?php echo $row['job_title'] ?></h5>
+                                <p class="card-text mb-1"><i class="bi bi-calendar4-event"></i> <b>&nbspDeadline:</b> <?php echo $row['deadline'] ?></p>
+                                <p class="card-text mb-1"><i class="bi bi-card-list"></i> <b>&nbspCategory:</b> <?php echo $row['category_name'] ?></p>
+                            </div>
+                            <div class="text-center">
+                                <?php
+                                if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
+                                    // Show the "Login to Apply" button if the user is not logged in
+                                    ?>
+                                    <a href="user/login.php" class="btn btn-primary btn-lg">Login to Apply</a>
+                                <?php
+                                } else {
+                                    // Show the "Apply" button if the user is logged in
+                                    ?>
+                                    <a href="<?php echo $apply_url ?>" class="btn btn-primary btn-lg">Apply</a>
+                                <?php
+                                }
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        <?php
+            }
+        } else {
+            echo "<p>No vacancies found</p>";
+        }
+        ?>
+    </div>
+</div>
+
 
 
             <h2 class="text-center ">COMPANY</h2>

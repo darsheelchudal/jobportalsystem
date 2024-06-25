@@ -6,6 +6,8 @@ $name = mysqli_real_escape_string($conn, $_POST['name']);
 $address = mysqli_real_escape_string($conn, $_POST['address']);
 $education = mysqli_real_escape_string($conn, $_POST['education']);
 
+
+
 $file_name = $_FILES['resume']['name'];
 $file_tmp = $_FILES['resume']['tmp_name'];
 $file_size = $_FILES['resume']['size'];
@@ -20,7 +22,7 @@ if (!empty($name) && !empty($address) && !empty($education) && in_array($file_ex
         $sql = "INSERT INTO applications (name, address, education, resume) VALUES ('$name', '$address', '$education', '$target_file')";
         if (mysqli_query($conn, $sql)) {
             $_SESSION['status'] = "Application submitted successfully.";
-            header('Location: apply.php');
+            header('Location: index.php');
             exit();
         } else {
             echo "Error: " . $sql . "<br>" . mysqli_error($conn);

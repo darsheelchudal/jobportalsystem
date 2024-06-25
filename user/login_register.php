@@ -25,6 +25,8 @@ if (isset($_POST['login'])) {
         if (password_verify($password, $row['password'])) {
             $_SESSION['logged_in'] = true;
             $_SESSION['status'] = "success";
+            $_SESSION['username'] = $row['username']; // Set username in session
+
             $_SESSION['message'] = "Successfully logged in.";
             header("location: ../index.php");
             exit();

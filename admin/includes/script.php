@@ -68,3 +68,20 @@
         format: "YYYY-MM-DD",
     });
 </script>
+
+    <!-- Bootstrap JavaScript and your additional scripts -->
+    <!-- Ensure jQuery and Bootstrap JS are included for toggling functionality -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha384-+0nh5ECk/jtTUZI6KA8q2mZBBWLOZ3z5r8lZ//FOmrE1Uuh9Tp4G97PNT0ofVWo4"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!-- JavaScript for sidebar toggle -->
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('active');
+        }
+    </script>
