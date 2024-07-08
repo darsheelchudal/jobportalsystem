@@ -104,28 +104,20 @@ include('config/dbcon.php');
                                 <input type="number" class="form-control" id="salary" name="salary">
                             </div>
                             <div class="form-group">
-                                <label>Category</label><br>
-                                <?php
-                                $sql = "SELECT * FROM categories";
-                                $res = mysqli_query($conn, $sql);
-                                if (mysqli_num_rows($res) > 0) {
-                                    foreach ($res as $value) {
+    <label for="category_id">Category</label>
+    <select id="category_id" class="form-control" name="category_id">
+        <?php
+        $sql = "SELECT * FROM categories";
+        $res = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($res) > 0) {
+            foreach ($res as $value) {
+                echo '<option value="' . $value['id'] . '">' . $value['category'] . '</option>';
+            }
+        }
+        ?>
+    </select>
+</div>
 
-
-                                ?>
-
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="category_id" id="category_id" value="<?php echo $value['id'] ?>">
-                                            <label class="form-check-label" for="category_id"> <?php echo $value['category'] ?></label>
-                                        </div>
-
-                                <?php
-                                    }
-                                }
-                                ?>
-
-
-                            </div>
                         </div>
                     </div>
                     <div class="col-12 text-center">

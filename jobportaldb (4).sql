@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 20, 2024 at 03:30 AM
+-- Generation Time: Jul 08, 2024 at 04:17 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -67,11 +67,16 @@ CREATE TABLE `applications` (
 --
 
 INSERT INTO `applications` (`a_id`, `name`, `address`, `education`, `resume`, `status`) VALUES
-(28, 'Malcolm Salazar', 'Accusamus ut dolore ', 'Quas est occaecat o', 'uploads/git-cheat-sheet-education.pdf', 1),
+(28, 'Malcolm Salazar', 'Accusamus ut dolore ', 'Quas est occaecat o', 'uploads/git-cheat-sheet-education.pdf', 2),
 (29, 'Jessamine Melendez', 'Ratione quo nihil an', 'Veniam in error qui', 'uploads/git-cheat-sheet-education (1).pdf', 2),
 (30, 'Sade Chen', 'Est sed illum aut ', 'Deleniti nulla non q', 'uploads/git-cheat-sheet-education (1).pdf', 2),
 (32, 'Quinn Bernard', 'Rem aspernatur assum', 'Et enim commodo cons', 'uploads/git-cheat-sheet-education (1).pdf', 2),
-(33, '3445', '24344', 'gffff', 'uploads/TU COVER page.docx', 0);
+(33, '3445', '24344', 'gffff', 'uploads/TU COVER page.docx', 2),
+(34, 'Brynne Barber', 'Molestiae incidunt ', 'Voluptatum vitae lab', 'uploads/Resume (1).pdf', 0),
+(35, 'Nigel Rosa', 'At sed incidunt nul', 'Rem qui in sit iste', 'uploads/Darsheel Chudal (1).pdf', 0),
+(36, 'Sydney Cline', 'Dignissimos tempore', 'Hic minim sequi dolo', 'uploads/Darsheel Chudal (1).pdf', 0),
+(37, 'Darsheel Chudal', 'Lokanthali', 'bachelor', 'uploads/TU COVER page (7).docx', 1),
+(38, 'Wynne Crane', 'Deleniti esse placea', 'Distinctio Laborios', 'uploads/git-cheat-sheet-education (2).pdf', 2);
 
 -- --------------------------------------------------------
 
@@ -171,10 +176,7 @@ CREATE TABLE `vacancies` (
 --
 
 INSERT INTO `vacancies` (`id`, `job_title`, `job_desc`, `job_status`, `deadline`, `company_id`, `category_id`, `salary`) VALUES
-(4, 'Php developer', 'A very high skilled php developer required.', 1, '2024-03-30', 7, 4, 22000),
-(6, 'Java developer', 'askhbacvkywfdjywqvtedygvc ', 1, '2024-03-22', 12, 8, 22000),
-(7, 'Aerospace Engineer', 'At SpaceX, we are actively developing technologies with the potential to change the course of life on Earth and beyond. We believe that hard work and innovative solutions result in big gains, so we prioritize hiring top talent and cultivating a culture based on merit. From building our interplanetary transport system to working with astronauts and deploying our Starlink broadband internet system, all SpaceX employees directly contribute to making our mission of making humanity multiplanetary a reality.\r\n\r\n', 1, '2024-03-18', 12, 1, 25000),
-(10, 'In quae ipsum et aut', 'Consequat Temporibu', 0, '2024-03-27', 12, 14, 88);
+(16, 'Js developer', 'Js developer', 1, '2024-06-28', 7, 4, 10000);
 
 --
 -- Indexes for dumped tables
@@ -234,7 +236,7 @@ ALTER TABLE `admin_login`
 -- AUTO_INCREMENT for table `applications`
 --
 ALTER TABLE `applications`
-  MODIFY `a_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `a_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -258,7 +260,7 @@ ALTER TABLE `registered_users`
 -- AUTO_INCREMENT for table `vacancies`
 --
 ALTER TABLE `vacancies`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Constraints for dumped tables
