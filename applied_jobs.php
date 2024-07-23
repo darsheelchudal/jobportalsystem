@@ -73,7 +73,7 @@ mysqli_close($conn);
                             <img src="admin/uploads/<?php echo htmlspecialchars($job['company_image']); ?>" alt="<?php echo htmlspecialchars($job['company_name']); ?>" class="company-image mr-3">
                             <div>
                                 <h5 class="card-title mb-0"><?php echo htmlspecialchars($job['company_name']); ?></h5>
-                                <h6 class="card-subtitle mb-2 text-muted"><?php echo htmlspecialchars($job['category_name']); ?></h6>
+                                <h6 class="card-subtitle mb-2 mt-3 text-muted"><?php echo htmlspecialchars($job['category_name']); ?></h6>
                             </div>
                         </div>
                         <h5 class="card-title"><?php echo htmlspecialchars($job['job_title']); ?></h5>

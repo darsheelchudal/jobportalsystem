@@ -274,40 +274,35 @@
 
         if (mysqli_num_rows($res) > 0) {
             while ($row = mysqli_fetch_assoc($res)) {
-                $apply_url = "apply.php?vacancy_id=" . $row['id']; // Use vacancy_id in the URL
+                $apply_url = "apply.php?vacancy_id=" . $row['id']; 
         ?>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center justify-content-center mb-3">
-                                <img src="admin/uploads/<?php echo htmlspecialchars($row['company_image']) ?>" alt="<?php echo htmlspecialchars($row['company_name']) ?>" height="200px" width="100%">
-                            </div>
-                            <div class="d-flex align-items-center mb-3">
-                                <h3 class="card-title mb-0 ml-3"><i class="bi bi-building"></i> <?php echo htmlspecialchars($row['company_name']) ?></h3>
-                            </div>
-                            <div class="mb-3">
-                                <h5 class="card-title"><i class="bi bi-briefcase"></i> <?php echo htmlspecialchars($row['job_title']) ?></h5>
-                                <p class="card-text mb-1"><i class="bi bi-calendar4-event"></i> <b>&nbsp;Deadline:</b> <?php echo htmlspecialchars($row['deadline']) ?></p>
-                                <p class="card-text mb-1"><i class="bi bi-card-list"></i> <b>&nbsp;Category:</b> <?php echo htmlspecialchars($row['category_name']) ?></p>
-                            </div>
-                            <div class="text-center">
-                                <?php
-                                if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
-                                    // Show the "Login to Apply" button if the user is not logged in
-                                    ?>
-                                    <a href="user/login.php" class="btn btn-primary btn-lg">Login to Apply</a>
-                                <?php
-                                } else {
-                                    // Show the "Apply" button if the user is logged in
-                                    ?>
-                                    <a href="<?php echo htmlspecialchars($apply_url) ?>" class="btn btn-primary btn-lg">Apply</a>
-                                <?php
-                                }
-                                ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               <div class="col-md-4 mb-4">
+    <div class="card h-100">    
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-center mb-3">
+                <img src="admin/uploads/<?php echo $row['company_image'] ?>" alt="<?php echo $row['company_name'] ?>" height="200px" width="100%">
+            </div>
+            <div class="d-flex align-items-center mb-3">
+                <h3 class="card-title mb-0 ml-3"><i class="bi bi-building"></i> <?php echo $row['company_name'] ?></h3>
+            </div>
+            <div class="mb-3">
+                <h5 class="card-title"><i class="bi bi-briefcase"></i> <?php echo $row['job_title'] ?></h5>
+                <p class="card-text mb-1"><i class="bi bi-calendar4-event"></i> <b>&nbsp;Deadline:</b> <?php echo $row['deadline'] ?></p>
+                <p class="card-text mb-1"><i class="bi bi-card-list"></i> <b>&nbsp;Category:</b> <?php echo $row['category_name'] ?></p>
+            </div>
+            <div class="text-center">
+                <?php if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']): ?>
+                    <!-- Show the "Login to Apply" button if the user is not logged in -->
+                    <a href="user/login.php" class="btn btn-primary btn-lg">Login to Apply</a>
+                <?php else: ?>
+                    <!-- Show the "Apply" button if the user is logged in -->
+                    <a href="<?php echo $apply_url ?>" class="btn btn-primary btn-lg">Apply</a>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
+
         <?php
             }
         } else {
