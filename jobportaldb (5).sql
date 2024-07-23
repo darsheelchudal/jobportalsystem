@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 08, 2024 at 04:17 AM
+-- Generation Time: Jul 23, 2024 at 04:50 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -59,24 +59,20 @@ CREATE TABLE `applications` (
   `address` varchar(255) NOT NULL,
   `education` varchar(255) NOT NULL,
   `resume` varchar(255) DEFAULT NULL,
-  `status` smallint(10) NOT NULL
+  `status` smallint(10) NOT NULL,
+  `message` text DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  `vacancy_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `applications`
 --
 
-INSERT INTO `applications` (`a_id`, `name`, `address`, `education`, `resume`, `status`) VALUES
-(28, 'Malcolm Salazar', 'Accusamus ut dolore ', 'Quas est occaecat o', 'uploads/git-cheat-sheet-education.pdf', 2),
-(29, 'Jessamine Melendez', 'Ratione quo nihil an', 'Veniam in error qui', 'uploads/git-cheat-sheet-education (1).pdf', 2),
-(30, 'Sade Chen', 'Est sed illum aut ', 'Deleniti nulla non q', 'uploads/git-cheat-sheet-education (1).pdf', 2),
-(32, 'Quinn Bernard', 'Rem aspernatur assum', 'Et enim commodo cons', 'uploads/git-cheat-sheet-education (1).pdf', 2),
-(33, '3445', '24344', 'gffff', 'uploads/TU COVER page.docx', 2),
-(34, 'Brynne Barber', 'Molestiae incidunt ', 'Voluptatum vitae lab', 'uploads/Resume (1).pdf', 0),
-(35, 'Nigel Rosa', 'At sed incidunt nul', 'Rem qui in sit iste', 'uploads/Darsheel Chudal (1).pdf', 0),
-(36, 'Sydney Cline', 'Dignissimos tempore', 'Hic minim sequi dolo', 'uploads/Darsheel Chudal (1).pdf', 0),
-(37, 'Darsheel Chudal', 'Lokanthali', 'bachelor', 'uploads/TU COVER page (7).docx', 1),
-(38, 'Wynne Crane', 'Deleniti esse placea', 'Distinctio Laborios', 'uploads/git-cheat-sheet-education (2).pdf', 2);
+INSERT INTO `applications` (`a_id`, `name`, `address`, `education`, `resume`, `status`, `message`, `user_id`, `vacancy_id`) VALUES
+(54, 'Julian Decker', 'Dolore qui sed molli', 'Sed vel eum tempora ', 'uploads/Microsyllabus-Data-Structure-_-Algorithms.pdf', 1, 'approved', 16, 18),
+(55, 'Darsheel Chudal', 'Lokanthali', 'Masters', 'uploads/Microsyllabus-Data-Structure-_-Algorithms.pdf', 0, NULL, 16, 18),
+(56, 'Chadwick Finch', 'Dolore quia non sed ', 'Nihil a dolores ab e', 'uploads/git-cheat-sheet-education (2).pdf', 0, NULL, 16, 16);
 
 -- --------------------------------------------------------
 
@@ -149,10 +145,7 @@ CREATE TABLE `registered_users` (
 --
 
 INSERT INTO `registered_users` (`id`, `full_name`, `username`, `email`, `password`) VALUES
-(9, 'Darsheel Chuda', 'darsheelchudal11', 'darsheelchudal11@gmail.com', '$2y$10$udAzi3BUfVtjWnj.gbqTnuDYfoJadhc2NRp4Zm71BDCmZMBpdyh3K'),
-(10, '', '', '', '$2y$10$W7he7supe9dE6X1o1vXife8WZPcMYk9/aucSLgh3r.8legruz1Zgy'),
-(11, 'Deirdre Simpson', 'rimov', 'horobigyda@mailinator.com', '$2y$10$HYVJ.9zMFEGPqqVt5orSNuI3QzcSEqspeD6Cj44HHq0.qLLmzW596'),
-(12, 'Keith Kerr', 'menyfim', 'lyrykenesu@mailinator.com', '$2y$10$AjkBxz4tEbOrkfaz5UDtN.f5OAryxKYSjp6F7eXCf1jSY8WeL8Uqe');
+(16, 'Darsheel Chudal', 'darsheelchudal11', 'darsheelchudal11@gmail.com', '$2y$10$ItNBybHn4.K9VqJSZQ12zeYcMevk/cKXe5Wd.ChieBlBUw3QdK3iW');
 
 -- --------------------------------------------------------
 
@@ -176,7 +169,11 @@ CREATE TABLE `vacancies` (
 --
 
 INSERT INTO `vacancies` (`id`, `job_title`, `job_desc`, `job_status`, `deadline`, `company_id`, `category_id`, `salary`) VALUES
-(16, 'Js developer', 'Js developer', 1, '2024-06-28', 7, 4, 10000);
+(16, 'Js developerr', 'Js developer', 0, '2024-06-28', 7, 4, 10000),
+(17, 'Exercitationem minim', 'Iure consequatur Es', 0, '2024-07-09', 14, 4, 93),
+(18, 'Distinctio Omnis au', 'Aliquid praesentium ', 1, '2024-07-12', 14, 9, 54),
+(19, 'Est enim aliqua Ad ', 'Ut sit fugit labor', 0, '2024-07-07', 12, 14, 97),
+(20, 'php developer', 'We are sekeking.................', 1, '2024-07-26', 14, 4, 55000);
 
 --
 -- Indexes for dumped tables
@@ -192,7 +189,8 @@ ALTER TABLE `admin_login`
 -- Indexes for table `applications`
 --
 ALTER TABLE `applications`
-  ADD PRIMARY KEY (`a_id`);
+  ADD PRIMARY KEY (`a_id`),
+  ADD KEY `vacancy_id` (`vacancy_id`);
 
 --
 -- Indexes for table `categories`
@@ -236,7 +234,7 @@ ALTER TABLE `admin_login`
 -- AUTO_INCREMENT for table `applications`
 --
 ALTER TABLE `applications`
-  MODIFY `a_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `a_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -254,17 +252,23 @@ ALTER TABLE `companies`
 -- AUTO_INCREMENT for table `registered_users`
 --
 ALTER TABLE `registered_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `vacancies`
 --
 ALTER TABLE `vacancies`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `applications`
+--
+ALTER TABLE `applications`
+  ADD CONSTRAINT `applications_ibfk_1` FOREIGN KEY (`vacancy_id`) REFERENCES `vacancies` (`id`);
 
 --
 -- Constraints for table `vacancies`
