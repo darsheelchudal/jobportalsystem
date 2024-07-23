@@ -5,15 +5,16 @@ session_start();
 require('config/connection.php');
 
 // Login functionality
+// Handle login functionality
 if (isset($_POST['login'])) {
-    $email_username = trim(mysqli_real_escape_string($conn, $_POST['email_username']));
-    $password = trim(mysqli_real_escape_string($conn, $_POST['password']));
+    $email_username = mysqli_real_escape_string($conn, $_POST['email_username']);
+    $password = $_POST['password'];
 
     // Check for empty fields
     if (empty($email_username) || empty($password)) {
         $_SESSION['status'] = "error";
         $_SESSION['message'] = "Both fields are required.";
-        header("location: login.php");
+        header("Location: login.php");
         exit();
     }
 
@@ -24,11 +25,11 @@ if (isset($_POST['login'])) {
         $row = mysqli_fetch_assoc($result);
         if (password_verify($password, $row['password'])) {
             $_SESSION['logged_in'] = true;
+            $_SESSION['username'] = $row['username'];
+            $_SESSION['user_id'] = $row['id']; // Add this line
             $_SESSION['status'] = "success";
-            $_SESSION['username'] = $row['username']; // Set username in session
-
             $_SESSION['message'] = "Successfully logged in.";
-            header("location: ../index.php");
+            header("Location: ../index.php");
             exit();
         } else {
             $_SESSION['status'] = "error";
@@ -39,52 +40,22 @@ if (isset($_POST['login'])) {
         $_SESSION['message'] = "Email or username not registered.";
     }
 
-    header("location: login.php");
+    header("Location: login.php");
     exit();
 }
 
 // Registration functionality
 if (isset($_POST['register'])) {
-    $full_name = trim(mysqli_real_escape_string($conn, $_POST['full_name']));
-    $username = trim(mysqli_real_escape_string($conn, $_POST['username']));
-    $email = trim(mysqli_real_escape_string($conn, $_POST['email']));
-    $password = trim(mysqli_real_escape_string($conn, $_POST['password']));
+    $full_name = $_POST['full_name'];
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
-    // Perform validation again to prevent tampering
-    $isValid = true;
-    $errors = [];
 
-    // Validate full name
-    if (empty($full_name)) {
-        $isValid = false;
-        $errors[] = "Full name is required.";
-    }
+  
 
-    // Validate username
-    if (empty($username)) {
-        $isValid = false;
-        $errors[] = "Username is required.";
-    }
 
-    // Validate email
-    if (empty($email)) {
-        $isValid = false;
-        $errors[] = "Email is required.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $isValid = false;
-        $errors[] = "Invalid email format.";
-    }
 
-    // Validate password
-    if (empty($password)) {
-        $isValid = false;
-        $errors[] = "Password is required.";
-    } elseif (strlen($password) < 7) {
-        $isValid = false;
-        $errors[] = "Password must be at least 7 characters long.";
-    }
-
-    if ($isValid) {
         // Process registration
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $insert_query = "INSERT INTO registered_users (full_name, username, email, password) VALUES ('$full_name', '$username', '$email', '$hashed_password')";
@@ -102,11 +73,11 @@ if (isset($_POST['register'])) {
     } else {
         // Set error messages in session for display
         $_SESSION['status'] = "error";
-        $_SESSION['message'] = implode("<br>", $errors);
+        $_SESSION['errors'] = $errors;
         header("location: register.php");
         exit();
     }
-}
+
 ?>
 
 <!DOCTYPE html>

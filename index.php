@@ -257,35 +257,38 @@
                 </section>
 
             </div>
-<h2 class="text-center mb-4">LISTED JOBS</h2>
+            <h2 class="text-center mb-4">LISTED JOBS</h2>
 <div class="container-fluid mb-4">
     <div class="row">
         <?php
-        $sql = "SELECT v.id, v.job_title, v.deadline, v.company_id, v.category_id, c.name AS company_name, c.image AS company_image, cat.category AS category_name
+        // Fetch job vacancies with company and category details
+        $sql = "SELECT v.id, v.job_title, v.deadline, v.company_id, v.category_id, 
+                       c.name AS company_name, c.image AS company_image, 
+                       cat.category AS category_name
                 FROM vacancies v
                 INNER JOIN companies c ON v.company_id = c.id
                 INNER JOIN categories cat ON v.category_id = cat.id
                 WHERE v.job_status = 1";
-        
+
         $res = mysqli_query($conn, $sql);
-        
+
         if (mysqli_num_rows($res) > 0) {
             while ($row = mysqli_fetch_assoc($res)) {
-                $apply_url = "apply.php?job_id=" . $row['id'];
+                $apply_url = "apply.php?vacancy_id=" . $row['id']; // Use vacancy_id in the URL
         ?>
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-center mb-3">
-                                <img src="admin/uploads/<?php echo $row['company_image'] ?>" alt="<?php echo $row['company_name'] ?>" height="200px" width="100%">
+                                <img src="admin/uploads/<?php echo htmlspecialchars($row['company_image']) ?>" alt="<?php echo htmlspecialchars($row['company_name']) ?>" height="200px" width="100%">
                             </div>
                             <div class="d-flex align-items-center mb-3">
-                                <h3 class="card-title mb-0 ml-3"><i class="bi bi-building"></i> <?php echo $row['company_name'] ?></h3>
+                                <h3 class="card-title mb-0 ml-3"><i class="bi bi-building"></i> <?php echo htmlspecialchars($row['company_name']) ?></h3>
                             </div>
                             <div class="mb-3">
-                                <h5 class="card-title"><i class="bi bi-briefcase"></i> <?php echo $row['job_title'] ?></h5>
-                                <p class="card-text mb-1"><i class="bi bi-calendar4-event"></i> <b>&nbspDeadline:</b> <?php echo $row['deadline'] ?></p>
-                                <p class="card-text mb-1"><i class="bi bi-card-list"></i> <b>&nbspCategory:</b> <?php echo $row['category_name'] ?></p>
+                                <h5 class="card-title"><i class="bi bi-briefcase"></i> <?php echo htmlspecialchars($row['job_title']) ?></h5>
+                                <p class="card-text mb-1"><i class="bi bi-calendar4-event"></i> <b>&nbsp;Deadline:</b> <?php echo htmlspecialchars($row['deadline']) ?></p>
+                                <p class="card-text mb-1"><i class="bi bi-card-list"></i> <b>&nbsp;Category:</b> <?php echo htmlspecialchars($row['category_name']) ?></p>
                             </div>
                             <div class="text-center">
                                 <?php
@@ -297,7 +300,7 @@
                                 } else {
                                     // Show the "Apply" button if the user is logged in
                                     ?>
-                                    <a href="<?php echo $apply_url ?>" class="btn btn-primary btn-lg">Apply</a>
+                                    <a href="<?php echo htmlspecialchars($apply_url) ?>" class="btn btn-primary btn-lg">Apply</a>
                                 <?php
                                 }
                                 ?>

@@ -60,7 +60,7 @@
                         <h3 class="card-title"><i class="bi bi-person-plus"></i> User Registration</h3>
                     </div>
                     <div class="card-body">
-                        <form id="registrationForm" action="register.php" method="post" onsubmit="return validateForm()">
+                        <form id="registrationForm" action="login_register.php" method="post" onsubmit="return validateForm()">
                             <div class="form-group">
                                 <label for="full_name">Full Name</label>
                                 <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Enter full name">

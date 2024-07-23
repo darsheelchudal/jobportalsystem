@@ -4,28 +4,26 @@ include('includes/navbar.php');
 include('includes/sidebar.php');
 include('config/dbcon.php');
 
-//applications manage
 
-if (isset($_POST['approve'])) {
-    $application_id = $_POST['application_id'];
-    $sql = "UPDATE applications SET status = 1 WHERE a_id = $application_id";
-    if (mysqli_query($conn, $sql)) {
-        $_SESSION['status'] = "Application approved successfully.";
-    } else {
-        $_SESSION['status'] = "Error updating application status: " . mysqli_error($conn);
-    }
-}
 
-if (isset($_POST['reject'])) {
+
+if (isset($_POST['approve']) || isset($_POST['reject'])) {
     $application_id = $_POST['application_id'];
-    $sql = "UPDATE applications SET status = 2 WHERE a_id = $application_id";
-    if (mysqli_query($conn, $sql)) {
-        $_SESSION['status'] = "Application rejected successfully.";
+    $message = $_POST['message'];
+    $status = isset($_POST['approve']) ? 1 : 2;
+
+    $sql = "UPDATE applications SET status = $status, message = '$message' WHERE a_id = $application_id";
+    $res = mysqli_query($conn, $sql);
+
+    if ($res) {
+ 
+        $_SESSION['status'] = $status == 1 ? "Application approved successfully." : "Application rejected successfully.";
     } else {
         $_SESSION['status'] = "Error updating application status: " . mysqli_error($conn);
     }
 }
 ?>
+
 
 <div class="content-wrapper">
     <div class="content-header">
@@ -52,8 +50,7 @@ if (isset($_POST['reject'])) {
                 <div class="col-md-12">
                     <?php
                     if (isset($_SESSION['status'])) {
-                        echo '<div class="alert alert-primary" role="alert">
-                        ' . $_SESSION['status'] . '</div>';
+                        echo '<div class="alert alert-primary" role="alert">' . $_SESSION['status'] . '</div>';
                         unset($_SESSION['status']);
                     }
                     ?>
@@ -67,7 +64,9 @@ if (isset($_POST['reject'])) {
                                     <th>Education</th>
                                     <th>Resume</th>
                                     <th>Status</th>
+                                    <th>Message</th>
                                     <th>Action</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -88,25 +87,27 @@ if (isset($_POST['reject'])) {
                                                 <a href="<?php echo $resume_path; ?>" target="_blank">View</a> | 
                                                 <a href="<?php echo $resume_path; ?>" download>Download</a>
                                             </td>
-<td>
-    <?php 
-    switch ($value['status']) {
-        case 1:
-            echo 'Approved';
-            break;
-        case 2:
-            echo 'Rejected';
-            break;
-        default:
-            echo 'Pending';
-            break;
-    }
-    ?>
-</td>                                            <td>
-                                                <form action="" method="post">
+                                            <td>
+                                                <?php 
+                                                switch ($value['status']) {
+                                                    case 1:
+                                                        echo 'Approved';
+                                                        break;
+                                                    case 2:
+                                                        echo 'Rejected';
+                                                        break;
+                                                    default:
+                                                        echo 'Pending';
+                                                        break;
+                                                }
+                                                ?>
+                                            </td>
+                                            <td><?php echo $value['message'] ?></td>
+                                            <td>
+                                                <form action="" method="post" id="form-<?php echo $value['a_id']; ?>">
                                                     <input type="hidden" name="application_id" value="<?php echo $value['a_id']; ?>">
-                                                    <button type="submit" class="btn btn-sm btn-primary" name="approve">Approve</button>
-                                                    <button type="submit" class="btn btn-sm btn-danger" name="reject">Reject</button>
+                                                    <button type="button" class="btn btn-sm btn-primary approve-btn" data-id="<?php echo $value['a_id']; ?>">Approve</button>
+                                                    <button type="button" class="btn btn-sm btn-danger reject-btn" data-id="<?php echo $value['a_id']; ?>">Reject</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -123,7 +124,86 @@ if (isset($_POST['reject'])) {
     </div>
 </div>
 
+<!-- Modal for Approving Application -->
+<div class="modal fade" id="acceptModal" tabindex="-1" aria-labelledby="acceptModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="acceptModalLabel">Approve Application</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="acceptForm" action="" method="post">
+        <div class="modal-body">
+          <input type="hidden" name="application_id" id="acceptApplicationId">
+          <div class="mb-3">
+            <label for="acceptMessage" class="form-label">Message</label>
+            <textarea class="form-control" id="acceptMessage" name="message" rows="3" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" name="approve">Approve</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Rejecting Application -->
+<div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rejectModalLabel">Reject Application</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="rejectForm" action="" method="post">
+        <div class="modal-body">
+          <input type="hidden" name="application_id" id="rejectApplicationId">
+          <div class="mb-3">
+            <label for="rejectMessage" class="form-label">Message</label>
+            <textarea class="form-control" id="rejectMessage" name="message" rows="3" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger" name="reject">Reject</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <?php
 include('includes/footer.php');
 include('includes/script.php');
 ?>
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const acceptButtons = document.querySelectorAll('.approve-btn');
+    const rejectButtons = document.querySelectorAll('.reject-btn');
+
+    acceptButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        const applicationId = this.dataset.id;
+        document.getElementById('acceptApplicationId').value = applicationId;
+        new bootstrap.Modal(document.getElementById('acceptModal')).show();
+      });
+    });
+
+    rejectButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        const applicationId = this.dataset.id;
+        document.getElementById('rejectApplicationId').value = applicationId;
+        new bootstrap.Modal(document.getElementById('rejectModal')).show();
+      });
+    });
+  });
+</script>

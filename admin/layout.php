@@ -5,6 +5,14 @@ include('includes/navbar.php');
 include('includes/sidebar.php');
 include('config/dbcon.php');
 
+
+// Check if the user is logged in, otherwise redirect to layout.php
+if (!isset($_SESSION['is_login']) || $_SESSION['is_login'] !== true) {
+    header('Location: layout.php');
+    exit(); // Exit to ensure no further script execution
+}
+
+
 // Fetch the total number of job applications from the database
 $sql_applications = "SELECT COUNT(*) as total_applications FROM applications";
 $result_applications = mysqli_query($conn, $sql_applications);
@@ -16,6 +24,7 @@ $sql_users = "SELECT COUNT(*) as total_users FROM registered_users";
 $result_users = mysqli_query($conn, $sql_users);
 $row_users = mysqli_fetch_assoc($result_users);
 $total_users = $row_users['total_users'];
+
 ?>
 
 <div class="content-wrapper">
