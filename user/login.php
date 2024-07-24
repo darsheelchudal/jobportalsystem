@@ -12,7 +12,6 @@
     // Check for session status message
     if (isset($_SESSION['status'])) {
         $statusClass = ($_SESSION['status'] == 'error') ? 'alert-danger' : 'alert-success';
-        $statusMessage = $_SESSION['message'];
         unset($_SESSION['status']);
         unset($_SESSION['message']);
     } else {

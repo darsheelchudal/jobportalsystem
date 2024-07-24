@@ -6,11 +6,7 @@ include('includes/sidebar.php');
 include('config/dbcon.php');
 
 
-// Check if the user is logged in, otherwise redirect to layout.php
-if (!isset($_SESSION['is_login']) || $_SESSION['is_login'] !== true) {
-    header('Location: layout.php');
-    exit(); // Exit to ensure no further script execution
-}
+
 
 
 // Fetch the total number of job applications from the database
