@@ -8,11 +8,12 @@ if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
     exit(); // Ensure script execution stops after redirection
 }
 
-if (!isset($_GET['vacancy_id'])) {
+// Get vacancy_id from the URL if present
+$vacancy_id = isset($_GET['vacancy_id']) ? $_GET['vacancy_id'] : null;
+
+if (!$vacancy_id) {
     die("Vacancy ID is required.");
 }
-
-$vacancy_id = $_GET['vacancy_id'];
 
 // Fetch vacancy details to display on the application form
 include("user/config/connection.php");
@@ -43,11 +44,22 @@ mysqli_close($conn);
 <body>
     <div class="container mt-5">
         <h2 class="text-center mb-4">Apply for Job</h2>
+        
+        <?php if(isset($_SESSION['status'])): ?>
+            <div class="alert alert-info">
+                <?php 
+                echo $_SESSION['status']; 
+                unset($_SESSION['status']); // Clear the message
+                ?>
+            </div>
+        <?php endif; ?>
+        
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <form action="applyDB.php" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
-                    <input type="hidden" name="vacancy_id" value="<?php echo htmlspecialchars($vacancy['id']); ?>">
+                    <!-- Removed htmlspecialchars() function -->
+                    <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>">
+                    <input type="hidden" name="vacancy_id" value="<?php echo $vacancy['id']; ?>">
 
                     <div class="form-group">
                         <label for="name">Name</label>

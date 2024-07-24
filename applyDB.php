@@ -1,17 +1,15 @@
 <?php
 session_start();
 
-// Include database connection
 include("user/config/connection.php");
 
-// Check if user is logged in
 if (!isset($_SESSION['logged_in']) || !isset($_SESSION['user_id'])) {
     $_SESSION['status'] = "You must be logged in to apply.";
     header('Location: user/login.php');
     exit();
 }
 
-// Get user_id from session
+
 $user_id = $_SESSION['user_id'];
 $vacancy_id = isset($_POST['vacancy_id']) ? $_POST['vacancy_id'] : null;
 
@@ -29,8 +27,19 @@ $file_size = $_FILES['resume']['size'];
 $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 $extensions = array("pdf", "doc", "docx");
 
+// Check for existing application
+$check_sql = "SELECT * FROM applications WHERE user_id = '$user_id' AND vacancy_id = '$vacancy_id'";
+$check_result = mysqli_query($conn, $check_sql);
+
+if (mysqli_num_rows($check_result) > 0) {
+    $_SESSION['status'] = "You have already applied for this vacancy.";
+    // Redirect back to the apply page with the vacancy ID
+    header('Location: apply.php?vacancy_id=' . $vacancy_id);
+    exit();
+}
+// Proceed if no existing application
 if (!empty($name) && !empty($address) && !empty($education) && in_array($file_ext, $extensions) && $file_size < 2097152) {
-    $target_dir = "uploads/";   
+    $target_dir = "uploads/";
     $target_file = $target_dir . basename($file_name);
 
     if (move_uploaded_file($file_tmp, $target_file)) {

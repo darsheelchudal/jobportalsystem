@@ -7,7 +7,7 @@ require('config/connection.php');
 // Login functionality
 // Handle login functionality
 if (isset($_POST['login'])) {
-    $email_username = mysqli_real_escape_string($conn, $_POST['email_username']);
+    $email_username = $_POST['email_username'];
     $password = $_POST['password'];
 
     // Check for empty fields

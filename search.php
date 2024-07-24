@@ -7,7 +7,7 @@ include("include/script.php");
 require('config/connection.php');
 
 if (isset($_POST['job_search'])) {
-    $search_query = mysqli_real_escape_string($conn, $_POST['job_search']);
+    $search_query = $_POST['job_search'];
 
     // Updated search query with joins to fetch company and category details
     $sql = "SELECT v.id, v.job_title, v.job_desc, v.deadline, v.company_id, v.category_id, 
@@ -32,13 +32,13 @@ if (isset($_POST['job_search'])) {
                         <div class="card mb-3">
                             <div class="card-body">
                                 <div class="d-flex align-items-center mb-3">
-                                    <img src="admin/uploads/<?php echo htmlspecialchars($row['company_image']); ?>" alt="<?php echo htmlspecialchars($row['company_name']); ?>" height="100px" width="100px">
-                                    <h5 class="card-title mb-0 ml-3"><?php echo htmlspecialchars($row['company_name']); ?></h5>
+                                    <img src="admin/uploads/<?php echo $row['company_image']; ?>" alt="<?php echo $row['company_name']; ?>" height="100px" width="100px">
+                                    <h5 class="card-title mb-0 ml-3"><?php echo $row['company_name']; ?></h5>
                                 </div>
-                                <h5 class="card-title"><?php echo htmlspecialchars($row['job_title']); ?></h5>
-                                <p class="card-text"><?php echo htmlspecialchars($row['job_desc']); ?></p>
-                                <p class="card-text"><strong>Category:</strong> <?php echo htmlspecialchars($row['category_name']); ?></p>
-                                <p class="card-text"><strong>Deadline:</strong> <?php echo htmlspecialchars($row['deadline']); ?></p>
+                                <h5 class="card-title"><?php echo $row['job_title']; ?></h5>
+                                <p class="card-text"><?php echo $row['job_desc']; ?></p>
+                                <p class="card-text"><strong>Category:</strong> <?php echo $row['category_name']; ?></p>
+                                <p class="card-text"><strong>Deadline:</strong> <?php echo $row['deadline']; ?></p>
                                 <div class="text-center">
                                     <!-- Include vacancy_id in the URL -->
                                     <a href="apply.php?vacancy_id=<?php echo $vacancy_id; ?>" class="btn btn-primary btn-md">Apply</a>
