@@ -18,14 +18,13 @@ if (isset($_POST['submit'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Fetch the hashed password from the database based on the provided username
     $sql = "SELECT * FROM admin_login WHERE username='$username'";
     $res = mysqli_query($conn, $sql);
 
     if ($res && mysqli_num_rows($res) > 0) {
         $row = mysqli_fetch_assoc($res);
 
-        // Verify the password using password_verify()
+      
         if (password_verify($password, $row['password'])) {
             $_SESSION['role'] = $row['role'];
             $_SESSION['is_login'] = true;
