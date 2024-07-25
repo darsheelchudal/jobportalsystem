@@ -5,13 +5,21 @@
 </head>
 <body>
     <?php
+
+  
     session_start();
+    if(isset($_SESSION['logged_in'])){
+        header("Location:../index.php");
+        $_SESSION['logged_in'] = true;
+
+    }
     include('../include/header.php');
     require('config/connection.php');
 
     // Check for session status message
     if (isset($_SESSION['status'])) {
         $statusClass = ($_SESSION['status'] == 'error') ? 'alert-danger' : 'alert-success';
+        $statusMessage = $_SESSION['message'] ?? '';
         unset($_SESSION['status']);
         unset($_SESSION['message']);
     } else {
@@ -74,7 +82,7 @@
                                 <input type="text" class="form-control" id="email_username" name="email_username" placeholder="Enter email/username">
                             </div>
                             <div class="form-group">
-                                <label for="Password">Password</label>
+                                <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                             </div>
                             <button type="submit" class="btn btn-primary" name="login">Submit</button>

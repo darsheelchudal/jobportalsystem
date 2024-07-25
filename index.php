@@ -1,7 +1,11 @@
-        <?php
-        session_start();
-        require('user/config/connection.php');
-        ?>
+<?php
+session_start();
+
+
+
+include('include/header.php');
+require('config/connection.php');
+?>
 
 
 

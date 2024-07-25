@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
     <!-- Include your header content here -->
+    <title>User Registration</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.6.0/css/bootstrap.min.css">
 </head>
 <body>
     <?php
@@ -50,10 +53,11 @@
             <div class="col-md-6 mt-3">
                 <div class="card">
                     <?php
-                    if (isset($_SESSION['status'])) {
-                        echo "<div class='alert alert-primary' role='alert'>"
-                            . $_SESSION['status'] .
-                            "</div>";
+                    if (isset($_SESSION['status']) && isset($_SESSION['message'])) {
+                        $statusClass = $_SESSION['status'] === 'error' ? 'alert-danger' : 'alert-success';
+                        echo "<div class='alert $statusClass' role='alert'>{$_SESSION['message']}</div>";
+                        unset($_SESSION['status']);
+                        unset($_SESSION['message']);
                     }
                     ?>
                     <div class="card-header">
@@ -98,60 +102,4 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.min.js"></script>
-    <script>
-        function validateForm() {
-            var isValid = true;
-
-            // Reset errors
-            document.getElementById('nameError').textContent = '';
-            document.getElementById('usernameError').textContent = '';
-            document.getElementById('emailError').textContent = '';
-            document.getElementById('passwordError').textContent = '';
-
-            // Validate full name
-            var fullName = document.getElementById('full_name').value.trim();
-            if (fullName === '') {
-                document.getElementById('nameError').textContent = 'Full name is required.';
-                isValid = false;
-            }
-
-            // Validate username
-            var username = document.getElementById('username').value.trim();
-            if (username === '') {
-                document.getElementById('usernameError').textContent = 'Username is required.';
-                isValid = false;
-            }
-
-            // Validate email
-            var email = document.getElementById('email').value.trim();
-            if (email === '') {
-                document.getElementById('emailError').textContent = 'Email is required.';
-                isValid = false;
-            } else {
-                var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailPattern.test(email)) {
-                    document.getElementById('emailError').textContent = 'Invalid email format.';
-                    isValid = false;
-                }
-            }
-
-            // Validate password
-            var password = document.getElementById('password').value.trim();
-            if (password === '') {
-                document.getElementById('passwordError').textContent = 'Password is required.';
-                isValid = false;
-            } else if (password.length < 7) {
-                document.getElementById('passwordError').textContent = 'Password must be at least 7 characters long.';
-                isValid = false;
-            }
-
-            return isValid;
-        }
-    </script>
-</body>
-</html>
-
-
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js

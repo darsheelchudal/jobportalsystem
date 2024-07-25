@@ -1,16 +1,12 @@
 <?php
 session_start();
 
-// Database connection
 require('config/connection.php');
 
-// Login functionality
-// Handle login functionality
 if (isset($_POST['login'])) {
     $email_username = $_POST['email_username'];
     $password = $_POST['password'];
 
-    // Check for empty fields
     if (empty($email_username) || empty($password)) {
         $_SESSION['status'] = "error";
         $_SESSION['message'] = "Both fields are required.";
@@ -26,7 +22,7 @@ if (isset($_POST['login'])) {
         if (password_verify($password, $row['password'])) {
             $_SESSION['logged_in'] = true;
             $_SESSION['username'] = $row['username'];
-            $_SESSION['user_id'] = $row['id']; // Add this line
+            $_SESSION['user_id'] = $row['id'];
             $_SESSION['status'] = "success";
             $_SESSION['message'] = "Successfully logged in.";
             header("Location: ../index.php");
@@ -34,62 +30,76 @@ if (isset($_POST['login'])) {
         } else {
             $_SESSION['status'] = "error";
             $_SESSION['message'] = "Incorrect password.";
+            header("Location: login.php");
+            exit();
         }
     } else {
         $_SESSION['status'] = "error";
         $_SESSION['message'] = "Email or username not registered.";
+        header("Location: login.php");
+        exit();
     }
-
-    header("Location: login.php");
-    exit();
 }
 
-// Registration functionality
 if (isset($_POST['register'])) {
     $full_name = $_POST['full_name'];
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
 
+    $errors = [];
 
-  
+    if (empty($full_name)) {
+        $errors[] = "Full name is required.";
+    }
 
+    if (empty($username)) {
+        $errors[] = "Username is required.";
+    }
 
+    if (empty($email)) {
+        $errors[] = "Email is required.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Invalid email format.";
+    }
 
-        // Process registration
+    if (empty($password)) {
+        $errors[] = "Password is required.";
+    } elseif (strlen($password) < 7) {
+        $errors[] = "Password must be at least 7 characters long.";
+    }
+
+    if (empty($errors)) {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $insert_query = "INSERT INTO registered_users (full_name, username, email, password) VALUES ('$full_name', '$username', '$email', '$hashed_password')";
+
         if (mysqli_query($conn, $insert_query)) {
             $_SESSION['status'] = "success";
             $_SESSION['message'] = "Registration successful.";
-            header("location: ../user/login.php");
+            header("Location: ../user/login.php");
             exit();
         } else {
             $_SESSION['status'] = "error";
             $_SESSION['message'] = "Error: Data cannot be inserted.";
-            header("location: register.php");
+            header("Location: register.php");
             exit();
         }
     } else {
-        // Set error messages in session for display
         $_SESSION['status'] = "error";
-        $_SESSION['errors'] = $errors;
-        header("location: register.php");
+        $_SESSION['message'] = implode("<br>", $errors);
+        header("Location: register.php");
         exit();
     }
-
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Include your header content here -->
 </head>
 <body>
-    <!-- Your HTML content here -->
     
     <?php
-    // Display status message
     if (isset($_SESSION['status']) && isset($_SESSION['message'])) {
         echo "<script>alert('{$_SESSION['message']}');</script>";
         unset($_SESSION['status']);
@@ -97,11 +107,9 @@ if (isset($_POST['register'])) {
     }
     ?>
     
-    <!-- Include your footer content here -->
 </body>
 </html>
 
 <?php
-// Close database connection
 mysqli_close($conn);
 ?>

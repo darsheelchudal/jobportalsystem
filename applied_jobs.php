@@ -43,6 +43,7 @@ $applied_jobs = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 mysqli_close($conn);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,28 +71,28 @@ mysqli_close($conn);
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
-                            <img src="admin/uploads/<?php echo htmlspecialchars($job['company_image']); ?>" alt="<?php echo htmlspecialchars($job['company_name']); ?>" class="company-image mr-3">
+                            <img src="admin/uploads/<?php echo $job['company_image']; ?>" alt="<?php echo $job['company_name']; ?>" class="company-image mr-3">
                             <div>
-                                <h5 class="card-title mb-0"><?php echo htmlspecialchars($job['company_name']); ?></h5>
-                                <h6 class="card-subtitle mb-2 mt-3 text-muted"><?php echo htmlspecialchars($job['category_name']); ?></h6>
+                                <h5 class="card-title mb-0"><?php echo $job['company_name']; ?></h5>
+                                <h6 class="card-subtitle mb-2 mt-3 text-muted"><?php echo $job['category_name']; ?></h6>
                             </div>
                         </div>
-                        <h5 class="card-title"><?php echo htmlspecialchars($job['job_title']); ?></h5>
-                        <p class="card-text">Deadline: <?php echo htmlspecialchars($job['deadline']); ?></p>
-                        <p class="card-text">Address: <?php echo htmlspecialchars($job['address']); ?></p>
-                        <p class="card-text">Education: <?php echo htmlspecialchars($job['education']); ?></p>
-                        <p class="card-text">Resume: <a href="<?php echo htmlspecialchars($job['resume']); ?>" target="_blank">View Resume</a></p>
+                        <h5 class="card-title"><?php echo $job['job_title']; ?></h5>
+                        <p class="card-text">Deadline: <?php echo $job['deadline']; ?></p>
+                        <p class="card-text">Address: <?php echo $job['address']; ?></p>
+                        <p class="card-text">Education: <?php echo $job['education']; ?></p>
+                        <p class="card-text">Resume: <a href="<?php echo $job['resume']; ?>" target="_blank">View Resume</a></p>
                         <p class="card-text">Status: <span class="badge badge-<?php echo $job['status'] == '1' ? 'success' : 'secondary'; ?>"><?php echo $job['status'] == '1' ? 'Accepted' : 'Pending'; ?></span></p>
                         <?php if (!empty($job['message'])): ?>
                             <div class="admin-message">
-                                <strong>Admin Message:</strong> <?php echo nl2br(htmlspecialchars($job['message'])); ?>
+                                <strong>Admin Message:</strong> <?php echo nl2br($job['message']); ?>
                             </div>
                         <?php endif; ?>
                     </div>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <div class="alert alert-warning text-center" role="alert">
+            <div class="alert alert-primary text-center" role="alert">
                 No applied jobs found.
             </div>
         <?php endif; ?>
